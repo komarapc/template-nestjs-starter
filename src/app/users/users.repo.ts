@@ -1,6 +1,11 @@
 import { PrismaService } from '@/service/prisma-service';
 import { Injectable } from '@nestjs/common';
-import { UserQueryDto, UserType } from './users.dto';
+import {
+  UserQueryDto,
+  UserStoreDto,
+  UserType,
+  UserUpdateDto,
+} from './users.dto';
 import { generateId } from '@/lib/utils';
 
 @Injectable()
@@ -31,7 +36,13 @@ export class UserRepo {
           email: { contains: email },
           name: { contains: name },
         },
-        select: this.selectFields,
+        select: {
+          ...this.selectFields,
+          user_roles: {
+            select: { id: true, roles: { select: { name: true } } },
+          },
+        },
+        orderBy: { name: 'asc' },
         skip: offset,
         take: Number(limit),
       }),
@@ -48,24 +59,26 @@ export class UserRepo {
   async findByEmail(email: string) {
     return await this.prisma.users.findUnique({ where: { email } });
   }
-  async create(data: UserType) {
+  async create(data: UserStoreDto) {
     return await this.prisma.users.create({
       data: {
-        id: generateId(),
+        id: data.userId,
         name: data.name,
         email: data.email,
         password: data.password,
       },
+      select: this.selectFields,
     });
   }
-  async update(id: string, data: UserType) {
+  async update(data: UserUpdateDto) {
     return await this.prisma.users.update({
-      where: { id },
+      where: { id: data.id },
       data: {
         name: data.name,
         email: data.email,
         password: data.password,
       },
+      select: this.selectFields,
     });
   }
   async delete(id: string) {
