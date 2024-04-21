@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model refresh_token {
+  id        String    @id
+  userId    String
+  token     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  users     users     @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "refresh_token_userId_fkey")
+}
+
+model roles {
+  id         String       @id
+  name       String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+  user_roles user_roles[]
+}
+
+model user_roles {
+  id        String    @id
+  userId    String
+  roleId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  roles     roles     @relation(fields: [roleId], references: [id])
+  users     users     @relation(fields: [userId], references: [id])
+
+  @@index([roleId], map: "user_roles_roleId_fkey")
+  @@index([userId], map: "user_roles_userId_fkey")
+}
+
+model users {
+  id            String          @id
+  name          String
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deletedAt     DateTime?
+  refresh_token refresh_token[]
+  user_roles    user_roles[]
+}
