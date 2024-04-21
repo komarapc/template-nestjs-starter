@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import compression from '@fastify/compress';
 import {
   NestFastifyApplication,
   FastifyAdapter,
@@ -10,6 +11,7 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
   app.enableCors();
+  app.register(compression);
   await app.listen(3000);
 }
 bootstrap();
