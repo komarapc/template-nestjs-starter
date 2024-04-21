@@ -5,6 +5,8 @@ import {
   NestFastifyApplication,
   FastifyAdapter,
 } from '@nestjs/platform-fastify';
+import config from './config/app';
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -12,6 +14,7 @@ async function bootstrap() {
   );
   app.enableCors();
   app.register(compression);
-  await app.listen(3000);
+  app.useGlobalPipes(new ValidationPipe());
+  await app.listen(config.port);
 }
 bootstrap();

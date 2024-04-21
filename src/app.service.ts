@@ -1,3 +1,4 @@
+import { PrismaService } from './service/prisma-service';
 import { Inject, Injectable } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -10,12 +11,17 @@ type Response = {
 };
 @Injectable()
 export class AppService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly prisma: PrismaService,
+  ) {}
   async getHello() {
+    const data = await this.prisma.users.findMany();
     return {
       statusCode: 200,
       statusMessage: 'OK',
       success: true,
+      data,
     };
   }
 

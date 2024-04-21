@@ -1,9 +1,10 @@
+import { PrismaService } from './service/prisma-service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ThrottlerGuard } from 'middleware/throtle-guard';
+import { ThrottlerGuard } from '@/middleware/throtle-guard';
 import { CacheModule } from '@nestjs/cache-manager';
 @Module({
   imports: [
@@ -16,6 +17,10 @@ import { CacheModule } from '@nestjs/cache-manager';
     CacheModule.register(),
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: 'APP_GUARD', useClass: ThrottlerGuard }],
+  providers: [
+    AppService,
+    { provide: 'APP_GUARD', useClass: ThrottlerGuard },
+    PrismaService,
+  ],
 })
 export class AppModule {}
