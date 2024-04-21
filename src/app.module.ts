@@ -7,6 +7,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerGuard } from '@/middleware/throtle-guard';
 import { CacheModule } from '@nestjs/cache-manager';
 import { UsersModule } from './app/users/users.module';
+import { UserRolesModule } from './app/user-roles/user-roles.module';
+import { RolesModule } from './app/roles/roles.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -17,6 +19,8 @@ import { UsersModule } from './app/users/users.module';
     ]),
     CacheModule.register(),
     UsersModule,
+    UserRolesModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [
