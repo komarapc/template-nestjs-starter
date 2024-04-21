@@ -8,7 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
   @Get()
   async getHello(@Res() res: Response) {
-    const response = await this.appService.getHello();
+    const response = await this.appService.getHelloWithCaching();
     res.status(response.statusCode).send(response);
   }
 }
