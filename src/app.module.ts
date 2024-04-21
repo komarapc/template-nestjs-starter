@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerGuard } from '@/middleware/throtle-guard';
 import { CacheModule } from '@nestjs/cache-manager';
+import { UsersModule } from './app/users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -15,6 +16,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       { name: 'long', ttl: 60000, limit: 100 },
     ]),
     CacheModule.register(),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

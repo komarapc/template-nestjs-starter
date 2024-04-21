@@ -16,12 +16,10 @@ export class AppService {
     private readonly prisma: PrismaService,
   ) {}
   async getHello() {
-    const data = await this.prisma.users.findMany();
     return {
       statusCode: 200,
       statusMessage: 'OK',
       success: true,
-      data,
     };
   }
 
