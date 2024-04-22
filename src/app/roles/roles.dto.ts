@@ -1,10 +1,12 @@
 import { ApiProperty, ApiQuery } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class RoleQueryDto {
   @ApiProperty({
     example: 'Admin',
     description: 'The name of the role',
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -14,16 +16,15 @@ export class RoleQueryDto {
     example: 1,
     description: 'The page number',
   })
-  @IsNumber()
   @IsOptional()
   page: number;
 
   @ApiProperty({
     example: 10,
     description: 'The number of items per page',
+    type: Number,
   })
   @IsOptional()
-  @IsNumber()
   limit: number;
 }
 
