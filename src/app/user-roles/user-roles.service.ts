@@ -45,4 +45,28 @@ export class UserRolesService {
       return responseError({ code: 500 });
     }
   }
+  async findById(id: string) {
+    try {
+      if (!id) return responseError({ code: 400, message: 'id is required' });
+      const userRole = await this.userRoleRepo.findById(id);
+      if (!userRole) return responseError({ code: 404 });
+      return responseSuccess({ code: 200, data: userRole });
+    } catch (error) {
+      debugConsole(error);
+      return responseError({ code: 500 });
+    }
+  }
+  async findByIdWithCaching(id: string) {
+    try {
+      const key = `user-roles-${id}`;
+      const userRolesCache: ResponseData = await this.cacheManager.get(key);
+      if (userRolesCache) return userRolesCache;
+      const result = await this.findById(id);
+      await this.cacheManager.set(key, result, 1000 * 30);
+      return result;
+    } catch (error) {
+      debugConsole(error);
+      return responseError({ code: 500 });
+    }
+  }
 }

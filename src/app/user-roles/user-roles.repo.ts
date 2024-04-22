@@ -44,7 +44,24 @@ export class UserRolesRepo {
     return { totalData: queryData, userRoles: queryResult };
   }
 
-  async findById(id: string) {}
+  async findById(id: string) {
+    return this.prisma.user_roles.findUnique({
+      where: { id },
+      include: {
+        roles: {
+          select: {
+            name: true,
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
 
   async store(data: UserRolesStoreDto) {
     const {

@@ -1,5 +1,5 @@
 import { ApiCommonResponses } from '@/lib/utils';
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 import { UserRolesService } from './user-roles.service';
@@ -17,6 +17,11 @@ export class UserRolesController {
     query.limit = Number(query.limit) || 10;
     query.page = Number(query.page) || 1;
     const result = await this.userRoleService.findManyWithCaching(query);
+    res.status(result.statusCode).send(result);
+  }
+  @Get(':id')
+  async findById(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.userRoleService.findByIdWithCaching(id);
     res.status(result.statusCode).send(result);
   }
 }
