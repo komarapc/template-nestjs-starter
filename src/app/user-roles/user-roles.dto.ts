@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { generateId } from '@/lib/utils';
 import { IsNotEmpty, IsString } from 'class-validator';
 export class UserRolesStoreDto {
+  id?: string;
   @ApiProperty({ example: generateId(), description: 'User ID' })
   @IsNotEmpty()
   @IsString()

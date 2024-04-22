@@ -64,28 +64,32 @@ export class UserRolesRepo {
   }
 
   async store(data: UserRolesStoreDto) {
-    const {
-      id,
-      roles: { name },
-    } = await this.prisma.user_roles.create({
-      data: {
-        id: generateId(),
-        userId: data.userId,
-        roleId: data.roleId,
-      },
+    const { id, roles, users } = await this.prisma.user_roles.create({
+      data: { id: generateId(), ...data },
       select: {
         id: true,
-        roles: { select: { name: true } },
-        users: { select: { name: true, email: true } },
+        roles: { select: { id: true, name: true } },
+        users: { select: { id: true, name: true, email: true } },
       },
     });
-    return { id, name };
+    return { id, roles, users };
   }
   async findByUserIdAndRoleId(userId: string, roleId: string) {
     return this.prisma.user_roles.findFirst({
       where: {
         userId,
         roleId,
+      },
+    });
+  }
+  async update(data: UserRolesStoreDto) {
+    return this.prisma.user_roles.update({
+      where: { id: data.id },
+      data,
+      select: {
+        id: true,
+        roles: { select: { id: true, name: true } },
+        users: { select: { id: true, name: true, email: true } },
       },
     });
   }

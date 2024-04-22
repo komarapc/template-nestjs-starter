@@ -97,4 +97,27 @@ export class UserRolesService {
     if (!roleExist) return 'Role not found';
     return null;
   }
+
+  async update(id: string, data: UserRolesStoreDto) {
+    try {
+      if (!id) return responseError({ code: 400, message: 'id is required' });
+      data.id = id;
+      const [userExist, roleExist] = await Promise.all([
+        this.userRepo.findById(data.userId),
+        this.roleRepo.findById(data.roleId),
+      ]);
+      const notFoundMessage = this.getNotFoundMessage(userExist, roleExist);
+      if (!userExist || !roleExist)
+        return responseError({ code: 404, message: notFoundMessage });
+      const userRole = await this.userRoleRepo.update(data);
+      return responseSuccess({
+        code: 200,
+        data: userRole,
+        message: 'User role updated',
+      });
+    } catch (error) {
+      debugConsole(error);
+      return responseError({ code: 500 });
+    }
+  }
 }

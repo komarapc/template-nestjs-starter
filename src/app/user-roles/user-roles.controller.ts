@@ -1,5 +1,14 @@
 import { ApiCommonResponses } from '@/lib/utils';
-import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 import { UserRolesService } from './user-roles.service';
@@ -27,6 +36,15 @@ export class UserRolesController {
   @Post()
   async store(@Body() body: UserRolesStoreDto, @Res() res: Response) {
     const result = await this.userRoleService.store(body);
+    res.status(result.statusCode).send(result);
+  }
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() body: UserRolesStoreDto,
+    @Res() res: Response,
+  ) {
+    const result = await this.userRoleService.update(id, body);
     res.status(result.statusCode).send(result);
   }
 }
