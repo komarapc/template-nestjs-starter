@@ -1,5 +1,7 @@
 import config from '@/config/app';
 import { customAlphabet } from 'nanoid';
+import { applyDecorators } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
 
 export const generateId = (length = 21) => {
   const alphabets =
@@ -72,3 +74,14 @@ export const responseError = (props: ResponseProps): ResponseData => {
 export const debugConsole = (payload: any) => {
   config.debug && console.log(payload);
 };
+
+export function ApiCommonResponses() {
+  return applyDecorators(
+    ApiResponse({ status: 200, description: 'Ok' }),
+    ApiResponse({ status: 201, description: 'Created' }),
+    ApiResponse({ status: 400, description: 'Bad Request' }),
+    ApiResponse({ status: 401, description: 'Unauthorized' }),
+    ApiResponse({ status: 429, description: 'Too Many Requests' }),
+    ApiResponse({ status: 500, description: 'Internal Server Error' }),
+  );
+}
