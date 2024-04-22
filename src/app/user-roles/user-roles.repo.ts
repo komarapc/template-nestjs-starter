@@ -76,8 +76,17 @@ export class UserRolesRepo {
       select: {
         id: true,
         roles: { select: { name: true } },
+        users: { select: { name: true, email: true } },
       },
     });
     return { id, name };
+  }
+  async findByUserIdAndRoleId(userId: string, roleId: string) {
+    return this.prisma.user_roles.findFirst({
+      where: {
+        userId,
+        roleId,
+      },
+    });
   }
 }

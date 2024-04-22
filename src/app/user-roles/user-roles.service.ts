@@ -1,7 +1,7 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRolesRepo } from './user-roles.repo';
-import { UserRolesQuery } from './user-roles.dto';
+import { UserRolesQuery, UserRolesStoreDto } from './user-roles.dto';
 import {
   debugConsole,
   ResponseData,
@@ -9,12 +9,16 @@ import {
   responseSuccess,
 } from '@/lib/utils';
 import { Cache } from 'cache-manager';
+import { UserRepo } from '../users/users.repo';
+import { RolesRepo } from '../roles/roles.repo';
 
 @Injectable()
 export class UserRolesService {
   constructor(
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly userRoleRepo: UserRolesRepo,
+    private readonly userRepo: UserRepo,
+    private readonly roleRepo: RolesRepo,
   ) {}
   async findMany(query: UserRolesQuery) {
     try {
@@ -68,5 +72,29 @@ export class UserRolesService {
       debugConsole(error);
       return responseError({ code: 500 });
     }
+  }
+  async store(data: UserRolesStoreDto) {
+    try {
+      const [userExist, roleExist, existUserRole] = await Promise.all([
+        this.userRepo.findById(data.userId),
+        this.roleRepo.findById(data.roleId),
+        this.userRoleRepo.findByUserIdAndRoleId(data.userId, data.roleId),
+      ]);
+      if (existUserRole)
+        return responseError({ code: 409, message: 'User role already exist' });
+      const notFoundMessage = this.getNotFoundMessage(userExist, roleExist);
+      if (!userExist || !roleExist)
+        return responseError({ code: 404, message: notFoundMessage });
+      const userRole = await this.userRoleRepo.store(data);
+      return responseSuccess({ code: 201, data: userRole });
+    } catch (error) {
+      debugConsole(error);
+      return responseError({ code: 500 });
+    }
+  }
+  private getNotFoundMessage(userExist: any, roleExist: any) {
+    if (!userExist) return 'User not found';
+    if (!roleExist) return 'Role not found';
+    return null;
   }
 }
