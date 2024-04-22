@@ -81,6 +81,7 @@ export function ApiCommonResponses() {
     ApiResponse({ status: 201, description: 'Created' }),
     ApiResponse({ status: 400, description: 'Bad Request' }),
     ApiResponse({ status: 401, description: 'Unauthorized' }),
+    ApiResponse({ status: 409, description: 'Conflict' }),
     ApiResponse({ status: 429, description: 'Too Many Requests' }),
     ApiResponse({ status: 500, description: 'Internal Server Error' }),
   );
