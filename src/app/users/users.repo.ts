@@ -53,7 +53,10 @@ export class UserRepo {
   async findById(id: string) {
     return await this.prisma.users.findUnique({
       where: { id },
-      select: { ...this.selectFields, user_roles: true },
+      select: {
+        ...this.selectFields,
+        user_roles: { select: { id: true, roles: { select: { name: true } } } },
+      },
     });
   }
   async findByEmail(email: string) {

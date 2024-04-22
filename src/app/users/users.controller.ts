@@ -19,7 +19,15 @@ import {
   UserUpdateDto,
 } from './users.dto';
 import { Request, Response } from 'express';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
+@ApiResponse({ status: 200, description: 'Ok' })
+@ApiResponse({ status: 201, description: 'Created' })
+@ApiResponse({ status: 400, description: 'Bad Request' })
+@ApiResponse({ status: 401, description: 'Unauthorized' })
+@ApiResponse({ status: 429, description: 'Too Many Requests' })
+@ApiResponse({ status: 500, description: 'Internal Server Error' })
 @SkipThrottle({ short: true, medium: false, long: true })
 @Controller('users')
 export class UsersController {

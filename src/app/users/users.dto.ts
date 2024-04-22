@@ -29,9 +29,17 @@ export type UserStoreProps = {
 };
 
 export class UserQueryDto {
-  @ApiProperty({ example: 'John Doe', description: "User's name" })
+  @ApiProperty({
+    example: 'John Doe',
+    description: "User's name",
+    required: false,
+  })
   name: string;
-  @ApiProperty({ example: 'johndoe@mail.com', description: "User's email" })
+  @ApiProperty({
+    example: 'johndoe@mail.com',
+    description: "User's email",
+    required: false,
+  })
   email: string;
   @ApiProperty({ example: 1, description: 'Page number', default: 1 })
   @Transform(({ value }) => parseInt(value))
