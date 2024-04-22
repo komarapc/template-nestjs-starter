@@ -37,6 +37,7 @@ async function bootstrap() {
     customCss: `.swagger-ui .topbar { display: none }`,
     customCssUrl: '../public/css/theme-openapi.css',
     customSiteTitle: 'API Docs',
+    customfavIcon: '../public/nestjs-icon.svg',
   });
 
   try {
