@@ -9,6 +9,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { UsersModule } from './app/users/users.module';
 import { UserRolesModule } from './app/user-roles/user-roles.module';
 import { RolesModule } from './app/roles/roles.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import path, { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot(),
