@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RoleCreateDto, RoleQueryDto } from './roles.dto';
 import { Response } from 'express';
@@ -22,5 +32,22 @@ export class RolesController {
   }
 
   @Post()
-  async store(@Body() Body: RoleCreateDto, @Res() res: Response) {}
+  async store(@Body() body: RoleCreateDto, @Res() res: Response) {
+    const result = await this.roleService.store(body);
+    res.status(result.statusCode).send(result);
+  }
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() body: RoleCreateDto,
+    @Res() res: Response,
+  ) {
+    const result = await this.roleService.update(id, body);
+    res.status(result.statusCode).send(result);
+  }
+  @Delete(':id')
+  async delete(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.roleService.delete(id);
+    res.status(result.statusCode).send(result);
+  }
 }

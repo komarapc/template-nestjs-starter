@@ -1,6 +1,6 @@
 import { PrismaService } from '@/service/prisma-service';
 import { Injectable } from '@nestjs/common';
-import { RoleQueryDto } from './roles.dto';
+import { RoleCreateDto, RoleQueryDto } from './roles.dto';
 
 @Injectable()
 export class RolesRepo {
@@ -29,5 +29,20 @@ export class RolesRepo {
   }
   async findById(id: string) {
     return this.prisma.roles.findUnique({ where: { id } });
+  }
+  async findByName(name: string) {
+    return this.prisma.roles.findFirst({ where: { name } });
+  }
+  async store(data: RoleCreateDto) {
+    return this.prisma.roles.create({ data });
+  }
+  async update(data: RoleCreateDto) {
+    return this.prisma.roles.update({ where: { id: data.id }, data });
+  }
+  async delete(id: string) {
+    return this.prisma.roles.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
   }
 }

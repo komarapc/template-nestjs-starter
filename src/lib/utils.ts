@@ -75,14 +75,25 @@ export const debugConsole = (payload: any) => {
   config.debug && console.log(payload);
 };
 
-export function ApiCommonResponses() {
-  return applyDecorators(
-    ApiResponse({ status: 200, description: 'Ok' }),
-    ApiResponse({ status: 201, description: 'Created' }),
-    ApiResponse({ status: 400, description: 'Bad Request' }),
-    ApiResponse({ status: 401, description: 'Unauthorized' }),
-    ApiResponse({ status: 409, description: 'Conflict' }),
-    ApiResponse({ status: 429, description: 'Too Many Requests' }),
-    ApiResponse({ status: 500, description: 'Internal Server Error' }),
-  );
+export function ApiCommonResponses(
+  code: number[] = [200, 201, 204, 400, 401, 403, 404, 409, 500],
+) {
+  const decorators = [];
+  for (const c of code) {
+    decorators.push(
+      ApiResponse({
+        status: c,
+        description: capitalizeSentence(HTTP_STATUS_CODE_MESSAGES[c]),
+      }),
+    );
+  }
+  return applyDecorators(...decorators);
+}
+
+export function capitalizeSentence(sentence: string) {
+  return sentence
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
