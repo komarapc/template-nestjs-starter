@@ -120,4 +120,16 @@ export class UserRolesService {
       return responseError({ code: 500 });
     }
   }
+  async delete(id: string) {
+    try {
+      if (!id) return responseError({ code: 400, message: 'id is required' });
+      const existUserRole = await this.userRoleRepo.findById(id);
+      if (!existUserRole) return responseError({ code: 404 });
+      await this.userRoleRepo.delete(id);
+      return responseSuccess({ code: 200, message: 'User role deleted' });
+    } catch (error) {
+      debugConsole(error);
+      return responseError({ code: 500 });
+    }
+  }
 }

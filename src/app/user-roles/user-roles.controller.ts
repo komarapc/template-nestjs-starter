@@ -2,6 +2,7 @@ import { ApiCommonResponses } from '@/lib/utils';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -45,6 +46,11 @@ export class UserRolesController {
     @Res() res: Response,
   ) {
     const result = await this.userRoleService.update(id, body);
+    res.status(result.statusCode).send(result);
+  }
+  @Delete(':id')
+  async delete(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.userRoleService.delete(id);
     res.status(result.statusCode).send(result);
   }
 }

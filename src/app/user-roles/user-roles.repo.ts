@@ -93,4 +93,10 @@ export class UserRolesRepo {
       },
     });
   }
+  async delete(id: string) {
+    return this.prisma.user_roles.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+  }
 }
