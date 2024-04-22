@@ -1,12 +1,6 @@
 import { PrismaService } from '@/service/prisma-service';
 import { Injectable } from '@nestjs/common';
-import {
-  UserQueryDto,
-  UserStoreDto,
-  UserType,
-  UserUpdateDto,
-} from './users.dto';
-import { generateId } from '@/lib/utils';
+import { UserQueryDto, UserStoreDto, UserUpdateDto } from './users.dto';
 
 @Injectable()
 export class UserRepo {
