@@ -11,6 +11,7 @@ import {
 import { Cache } from 'cache-manager';
 import { UserRepo } from '../users/users.repo';
 import { RolesRepo } from '../roles/roles.repo';
+import { TokenService } from '@/service/token.service';
 
 @Injectable()
 export class UserRolesService {

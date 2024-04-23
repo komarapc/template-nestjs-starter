@@ -10,7 +10,7 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 import { UserRolesService } from './user-roles.service';
 import { UserRolesQuery, UserRolesStoreDto } from './user-roles.dto';
@@ -19,6 +19,7 @@ import { Response } from 'express';
 @ApiTags('user-roles')
 @ApiCommonResponses()
 @SkipThrottle({ short: true, medium: true, long: false })
+@ApiBearerAuth()
 @Controller('user-roles')
 export class UserRolesController {
   constructor(private readonly userRoleService: UserRolesService) {}
