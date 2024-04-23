@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthDto } from './auth.dto';
+import { AuthDto, AuthLogsDto } from './auth.dto';
 import {
   debugConsole,
   excludeFields,
@@ -12,6 +12,7 @@ import * as jwt from 'jsonwebtoken';
 import { UserRolesRepo } from '../user-roles/user-roles.repo';
 import config from '@/config/app';
 import { TokenService } from '@/service/token.service';
+import { AuthLogsRepo } from './auth.repo';
 interface Payload extends jwt.JwtPayload {
   userId: string;
   rememberMe: boolean;
@@ -22,6 +23,7 @@ export class AuthService {
     private readonly userRepo: UserRepo,
     private readonly userRolesRepo: UserRolesRepo,
     private readonly tokenService: TokenService,
+    private readonly authLogsRepo: AuthLogsRepo,
   ) {}
   async signin(data: AuthDto) {
     try {
@@ -70,6 +72,8 @@ export class AuthService {
           message: 'User does not have this role.',
         });
       const payload = { userId, roleId };
+      const authLogs: AuthLogsDto = { userId: userId, action: 'signin' };
+      await this.authLogsRepo.store(authLogs);
       const response = {
         user: excludeFields(user, ['user_roles']),
         roles: userRoles.roles,

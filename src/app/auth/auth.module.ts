@@ -12,6 +12,7 @@ import { UserRolesRepo } from '../user-roles/user-roles.repo';
 import { BearerMiddleware } from '@/middleware/bearer.middleware';
 import { BearerService } from '@/service/bearer.service';
 import { TokenService } from '@/service/token.service';
+import { AuthLogsRepo } from './auth.repo';
 
 @Module({
   imports: [],
@@ -23,6 +24,7 @@ import { TokenService } from '@/service/token.service';
     TokenService,
     UserRepo,
     UserRolesRepo,
+    AuthLogsRepo,
   ],
 })
 export class AuthModule implements NestModule {

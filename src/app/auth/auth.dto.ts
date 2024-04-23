@@ -46,3 +46,7 @@ export class AuthWithRoleDto {
   @IsNotEmpty()
   roleId: string;
 }
+export class AuthLogsDto {
+  userId: string;
+  action: string;
+}
