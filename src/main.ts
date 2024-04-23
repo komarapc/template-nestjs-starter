@@ -39,7 +39,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document, {
     swaggerOptions: {
       defaultModelsExpandDepth: -1,
-      // docExpansion: 'none',
+      docExpansion: 'none',
       filter: true,
       showRequestDuration: true,
       tagsSorter: 'alpha',
