@@ -93,6 +93,14 @@ export class UserRolesRepo {
         userId,
         roleId,
       },
+      include: {
+        roles: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
   }
   async update(data: UserRolesStoreDto) {

@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class AuthDto {
   @ApiProperty({
@@ -19,6 +25,15 @@ export class AuthDto {
   @IsString()
   @MinLength(8)
   password: string;
+
+  @ApiProperty({
+    description: 'Remember me',
+    required: false,
+    example: false,
+  })
+  @IsNotEmpty()
+  @IsBoolean()
+  rememberMe: boolean;
 }
 
 export class AuthWithRoleDto {

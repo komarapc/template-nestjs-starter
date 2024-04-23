@@ -22,8 +22,7 @@ export class AuthController {
     @Res() res: Response,
     @Body() body: AuthWithRoleDto,
   ) {
-    console.log('authorization', req.headers.authorization);
-    console.log({ body });
-    return res.status(200).send({ message: 'Role selected successfully' });
+    const result = await this.authService.signinWithRole(body.roleId);
+    return res.status(result.statusCode).send(result);
   }
 }

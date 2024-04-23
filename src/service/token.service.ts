@@ -1,5 +1,5 @@
 import config from '@/config/app';
-import { debugConsole } from '@/lib/utils';
+import { debugConsole, generateId } from '@/lib/utils';
 import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 @Injectable()
@@ -12,10 +12,13 @@ export class TokenService {
   getToken() {
     return this.token;
   }
-  decodeToken() {
+  decodeToken<T>(): T {
     try {
-      const result = jwt.decode(this.token, { json: true, complete: true });
-      return result;
+      const { payload } = jwt.decode(this.token, {
+        json: true,
+        complete: true,
+      });
+      return payload as T;
     } catch (error) {
       debugConsole({ from: 'TokenService', error });
       return null;
@@ -29,5 +32,11 @@ export class TokenService {
       debugConsole({ from: 'TokenService', error });
       return null;
     }
+  }
+  generateToken(payload: any, expiresIn: string) {
+    return jwt.sign(payload, config.jwtSecret, {
+      expiresIn,
+      jwtid: generateId(32),
+    });
   }
 }
