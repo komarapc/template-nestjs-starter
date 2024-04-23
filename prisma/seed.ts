@@ -13,10 +13,7 @@ async function main() {
     id: customAlphabet(alphabets, 21)(),
     name: faker.person.fullName(),
     email: faker.internet.email(),
-    password: bcrypt.hashSync(
-      'passsword',
-      Number(process.env.SALT_ROUND) || 10,
-    ),
+    password: bcrypt.hashSync('password', Number(process.env.SALT_ROUND) || 10),
   }));
 
   for (const user of users) {
