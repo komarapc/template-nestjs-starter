@@ -12,10 +12,11 @@ import {
 import { RolesService } from './roles.service';
 import { RoleCreateDto, RoleQueryDto } from './roles.dto';
 import { Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiCommonResponses } from '@/lib/utils';
 
 @ApiTags('roles')
+@ApiBearerAuth()
 @ApiCommonResponses()
 @Controller('roles')
 export class RolesController {

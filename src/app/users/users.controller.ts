@@ -19,10 +19,11 @@ import {
   UserUpdateDto,
 } from './users.dto';
 import { Request, Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiCommonResponses } from '@/lib/utils';
 
 @ApiTags('users')
+@ApiBearerAuth()
 @ApiCommonResponses()
 @SkipThrottle({ short: true, medium: false, long: true })
 @Controller('users')
