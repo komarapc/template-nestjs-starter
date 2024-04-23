@@ -33,7 +33,7 @@ export class UserRepo {
         select: {
           ...this.selectFields,
           user_roles: {
-            select: { id: true, roles: { select: { name: true } } },
+            select: { id: true, roles: { select: { id: true, name: true } } },
           },
         },
         orderBy: { name: 'asc' },
@@ -49,12 +49,19 @@ export class UserRepo {
       where: { id },
       select: {
         ...this.selectFields,
-        user_roles: { select: { id: true, roles: { select: { name: true } } } },
+        user_roles: {
+          select: { id: true, roles: { select: { id: true, name: true } } },
+        },
       },
     });
   }
   async findByEmail(email: string) {
-    return await this.prisma.users.findUnique({ where: { email } });
+    return await this.prisma.users.findUnique({
+      where: { email },
+      include: {
+        user_roles: { select: { roles: { select: { id: true, name: true } } } },
+      },
+    });
   }
   async create(data: UserStoreDto) {
     return await this.prisma.users.create({

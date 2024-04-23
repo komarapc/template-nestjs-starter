@@ -62,6 +62,19 @@ export class UserRolesRepo {
       },
     });
   }
+  async findByUserId(userId: string) {
+    return this.prisma.user_roles.findMany({
+      where: { deletedAt: null, userId },
+      include: {
+        roles: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+  }
 
   async store(data: UserRolesStoreDto) {
     const { id, roles, users } = await this.prisma.user_roles.create({
