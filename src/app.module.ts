@@ -12,6 +12,7 @@ import { RolesModule } from './app/roles/roles.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import path, { join } from 'path';
 import { ModelsModule } from './app/models/models.module';
+import { AuthModule } from './app/auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ModelsModule } from './app/models/models.module';
     UserRolesModule,
     RolesModule,
     ModelsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
