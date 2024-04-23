@@ -20,12 +20,13 @@ model refresh_token {
 }
 
 model roles {
-  id         String       @id
-  name       String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  deletedAt  DateTime?
-  user_roles user_roles[]
+  id          String        @id
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  user_roles  user_roles[]
+  permissions permissions[]
 }
 
 model user_roles {
@@ -52,4 +53,36 @@ model users {
   deletedAt     DateTime?
   refresh_token refresh_token[]
   user_roles    user_roles[]
+  auth_logs     auth_logs[]
+}
+
+model permissions {
+  id            String    @id
+  modelId       String
+  roleId        String
+  allowedMethod Json
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  roles         roles     @relation(fields: [roleId], references: [id])
+  models        models    @relation(fields: [modelId], references: [id])
+}
+
+model models {
+  id          String        @id
+  name        String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  permissions permissions[]
+}
+
+model auth_logs {
+  id        String    @id
+  userId    String
+  action    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  users     users     @relation(fields: [userId], references: [id])
 }
