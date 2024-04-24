@@ -10,7 +10,6 @@ import { UserRepo } from '../users/users.repo';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { UserRolesRepo } from '../user-roles/user-roles.repo';
-import config from '@/config/app';
 import { TokenService } from '@/service/token.service';
 import { AuthLogsRepo } from './auth.repo';
 interface Payload extends jwt.JwtPayload {

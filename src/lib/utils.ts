@@ -46,7 +46,7 @@ const HTTP_STATUS_CODE_MESSAGES: Record<number, string> = {
 
 type ResponseProps = {
   code: number;
-  message?: string;
+  message?: string | string[] | Record<string, any>;
   data?: any;
 };
 export const responseSuccess = (props: ResponseProps): ResponseData => {
