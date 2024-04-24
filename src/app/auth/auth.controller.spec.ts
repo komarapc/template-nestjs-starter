@@ -47,7 +47,8 @@ describe('AuthController', () => {
         password: 'password',
         rememberMe: true,
       };
-      mockAuthService.signin.mockResolvedValue(result);
+
+      jest.spyOn(service, 'signin').mockResolvedValue(result);
       await controller.signin(res as Response, body);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.send).toHaveBeenCalledWith(result);
@@ -64,7 +65,7 @@ describe('AuthController', () => {
         password: '',
         rememberMe: false,
       };
-      mockAuthService.signin.mockResolvedValue(result);
+      jest.spyOn(service, 'signin').mockResolvedValue(result);
       await controller.signin(res as Response, body);
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.send).toHaveBeenCalledWith(result);
@@ -78,10 +79,22 @@ describe('AuthController', () => {
         status: jest.fn().mockReturnThis(),
         send: jest.fn().mockReturnThis(),
       };
+      const body: AuthWithRoleDto = {} as AuthWithRoleDto;
+      jest.spyOn(service, 'signinWithRole').mockResolvedValue(result);
+      await controller.signinRole({} as Request, res as Response, body);
+      expect(res.status).toHaveBeenCalledWith(result.statusCode);
+      expect(res.send).toHaveBeenCalledWith(result);
+    });
+    it('should return 400', async () => {
+      const result = responseError({ code: 400 });
+      const res: Partial<Response> = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn().mockReturnThis(),
+      };
       const body: AuthWithRoleDto = {
         roleId: '',
-      };
-      mockAuthService.signinWithRole.mockResolvedValue(result);
+      } as AuthWithRoleDto;
+      jest.spyOn(service, 'signinWithRole').mockResolvedValue(result);
       await controller.signinRole({} as Request, res as Response, body);
       expect(res.status).toHaveBeenCalledWith(result.statusCode);
       expect(res.send).toHaveBeenCalledWith(result);

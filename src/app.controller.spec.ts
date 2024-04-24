@@ -34,7 +34,7 @@ describe('AppController', () => {
     it('should return the response from the AppService', async () => {
       const result: ResponseData = {
         statusCode: 200,
-        statusMessage: 'OKs',
+        statusMessage: 'OK',
         success: true,
       };
       jest
